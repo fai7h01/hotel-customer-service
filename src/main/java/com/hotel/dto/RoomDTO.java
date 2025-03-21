@@ -2,10 +2,7 @@ package com.hotel.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hotel.enums.RoomType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -14,6 +11,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@ToString
 public class RoomDTO {
 
     private Long id;
@@ -22,5 +20,4 @@ public class RoomDTO {
     private BigDecimal pricePerNight;
     private int capacity;
     private int floorNumber;
-    private boolean isAvailable;
 }

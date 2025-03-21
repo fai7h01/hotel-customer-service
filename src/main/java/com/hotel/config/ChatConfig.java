@@ -22,7 +22,7 @@ public class ChatConfig {
                         new MessageChatMemoryAdvisor(chatMemory),
                         new PromptChatMemoryAdvisor(chatMemory),
                         new QuestionAnswerAdvisor(vectorStore, SearchRequest.builder().topK(1).similarityThreshold(0.75).build()))
-                .defaultFunctions("getAvailableRooms")
+                .defaultFunctions("getAvailableRooms", "getAvailableRoomsByDate", "getAllBookings", "createBooking")
                 .build();
     }
 
@@ -32,7 +32,7 @@ public class ChatConfig {
     }
 
 
-    private static String SYSTEM_PROMPT = """
+    private static final String SYSTEM_PROMPT = """
             You are the AI assistant for Hotel Service, designed to provide friendly and helpful support to hotel guests and potential customers. Your name is HotelHelper.
             
             Primary capabilities:
@@ -54,6 +54,10 @@ public class ChatConfig {
             8. Keep responses concise but thorough
             
             If guests need technical support or have complaints requiring management attention, offer to connect them with hotel staff.
+            
+            Use provided functions to interact with the system and assist guests effectively.
+            Always check room availability of rooms by getting all the bookings and available rooms.
+            
             
             Remember to enhance the guest experience by being helpful, accurate, and friendly at all times.
             """;

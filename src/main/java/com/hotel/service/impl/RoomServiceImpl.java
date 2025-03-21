@@ -1,10 +1,13 @@
 package com.hotel.service.impl;
 
 import com.hotel.dto.RoomDTO;
+import com.hotel.entity.Room;
 import com.hotel.exception.RoomNotFoundException;
 import com.hotel.mapper.RoomMapper;
 import com.hotel.repository.RoomRepository;
 import com.hotel.service.RoomService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,6 +16,7 @@ import java.util.List;
 @Service
 public class RoomServiceImpl implements RoomService {
 
+    private static final Logger log = LoggerFactory.getLogger(RoomServiceImpl.class);
     private final RoomRepository roomRepository;
     private final RoomMapper roomMapper;
 
@@ -34,6 +38,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public RoomDTO getRoomByNumber(String roomNumber) {
+        var foundRoom = roomRepository.findRoomByRoomNumber(roomNumber)
+                .orElseThrow(() -> new RoomNotFoundException("Room not found with number: " + roomNumber));
+        return roomMapper.toDto(foundRoom);
+    }
+
+    @Override
     public List<RoomDTO> getAllRooms() {
         return roomMapper.toDtoList(roomRepository.findAll());
     }
@@ -47,6 +58,7 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomDTO> getAvailableRoomsByDate(LocalDate checkInDate, LocalDate checkOutDate) {
         validateDates(checkInDate, checkOutDate);
         var rooms = roomRepository.findAvailableRoomsByDateRange(checkInDate, checkOutDate);
+        log.info("Available rooms for dates {} - {}: {}", checkInDate, checkOutDate, rooms);
         return roomMapper.toDtoList(rooms);
     }
 

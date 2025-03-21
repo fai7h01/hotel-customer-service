@@ -1,6 +1,7 @@
 package com.hotel.service;
 
 import com.hotel.dto.BookingDTO;
+import com.hotel.dto.request.BookingRequest;
 import com.hotel.enums.BookingStatus;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 public interface BookingService {
 
     BookingDTO createBooking(BookingDTO bookingDTO);
+    BookingDTO createBooking(BookingRequest bookingRequest);
     BookingDTO getBookingById(Long id);
     List<BookingDTO> getAllBookings();
 

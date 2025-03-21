@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
@@ -27,6 +28,4 @@ public class Room extends BaseEntity {
     private BigDecimal pricePerNight;
     private int capacity;
     private int floorNumber;
-    private boolean isAvailable;
-
 }

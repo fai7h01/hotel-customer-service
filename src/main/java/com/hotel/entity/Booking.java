@@ -9,7 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -27,8 +27,8 @@ public class Booking extends BaseEntity {
     @JoinColumn(name = "room_id")
     private Room room;
     
-    private LocalDateTime checkInDate;
-    private LocalDateTime checkOutDate;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
     private int numberOfGuests;
     private BigDecimal totalPrice;
     

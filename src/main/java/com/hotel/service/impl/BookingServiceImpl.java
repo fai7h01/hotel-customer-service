@@ -1,14 +1,21 @@
 package com.hotel.service.impl;
 
 import com.hotel.dto.BookingDTO;
+import com.hotel.dto.RoomDTO;
+import com.hotel.dto.request.BookingRequest;
+import com.hotel.entity.Booking;
 import com.hotel.enums.BookingStatus;
+import com.hotel.enums.PaymentStatus;
 import com.hotel.exception.BookingNotFoundException;
 import com.hotel.mapper.BookingMapper;
 import com.hotel.repository.BookingRepository;
 import com.hotel.service.AuthenticationService;
 import com.hotel.service.BookingService;
+import com.hotel.service.RoomService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -17,16 +24,41 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
     private final AuthenticationService authService;
+    private final RoomService roomService;
 
-    public BookingServiceImpl(BookingRepository bookingRepository, BookingMapper bookingMapper, AuthenticationService authService) {
+    public BookingServiceImpl(BookingRepository bookingRepository, BookingMapper bookingMapper, AuthenticationService authService, RoomService roomService) {
         this.bookingRepository = bookingRepository;
         this.bookingMapper = bookingMapper;
         this.authService = authService;
+        this.roomService = roomService;
     }
 
     @Override
     public BookingDTO createBooking(BookingDTO bookingDTO) {
         return null;
+    }
+
+    @Override
+    public BookingDTO createBooking(BookingRequest bookingRequest) {
+        BookingDTO newBooking = configureBooking(bookingRequest);
+        return bookingMapper.toDto(bookingRepository.save(bookingMapper.toEntity(newBooking)));
+    }
+
+    private BookingDTO configureBooking(BookingRequest bookingRequest) {
+        BookingDTO booking = new BookingDTO();
+        booking.setStatus(BookingStatus.PENDING);
+        var foundRoom = roomService.getRoomByNumber(bookingRequest.roomNumber());
+        booking.setRoom(foundRoom);
+        booking.setCheckInDate(LocalDate.parse(bookingRequest.checkInDate()));
+        booking.setCheckOutDate(LocalDate.parse(bookingRequest.checkOutDate()));
+        booking.setTotalPrice(calculateTotalPrice(booking));
+        booking.setPaymentStatus(PaymentStatus.PENDING);
+        return booking;
+    }
+
+    private BigDecimal calculateTotalPrice(BookingDTO booking) {
+        var days = booking.getCheckOutDate().getDayOfYear() - booking.getCheckInDate().getDayOfYear();
+        return booking.getRoom().getPricePerNight().multiply(BigDecimal.valueOf(days));
     }
 
     @Override
