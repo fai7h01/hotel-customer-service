@@ -2,8 +2,8 @@
 INSERT INTO users ( first_name, last_name, email, password, phone, role,
                    insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted) VALUES
 -- Admin user
-( 'John', 'Admin', 'admin@hotel.com', '123456789', '123-456-7890',
- 'ADMIN', now(), 1, now(), 1, false),
+( 'John', 'Reese', 'johnreese@gmail.com', 'Abc1', '123-456-7890',
+ 'CUSTOMER', now(), 1, now(), 1, false),
 
 -- Customer users
 ( 'Sarah', 'Johnson', 'sarah@example.com', '123456789', '234-567-8901',
@@ -68,11 +68,11 @@ INSERT INTO bookings ( user_id, room_id, check_in_date, check_out_date, number_o
                        status, payment_status, insert_date_time, insert_user_id,
                        last_update_date_time, last_update_user_id, is_deleted) VALUES
 -- Booking for SINGLE room (101)
-( 4, 1, '2025-03-01', '2025-03-31', 1, 239.97,
+( 4, 1, '2025-04-01', '2025-04-25', 1, 239.97,
   'CONFIRMED', 'PAID', now(), 1, now(), 1, false),
 
 -- Booking for SINGLE room (102)
-( 5, 2, '2025-03-01', '2025-03-31', 1, 239.97,
+( 5, 2, '2025-04-10', '2025-04-24', 1, 239.97,
   'CONFIRMED', 'PAID', now(), 1, now(), 1, false),
 
 -- Booking for DOUBLE room (103)

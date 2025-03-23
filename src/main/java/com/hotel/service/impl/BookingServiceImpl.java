@@ -1,7 +1,7 @@
 package com.hotel.service.impl;
 
 import com.hotel.dto.BookingDTO;
-import com.hotel.dto.RoomDTO;
+import com.hotel.dto.UserDTO;
 import com.hotel.dto.request.BookingRequest;
 import com.hotel.entity.Booking;
 import com.hotel.enums.BookingStatus;
@@ -12,12 +12,14 @@ import com.hotel.repository.BookingRepository;
 import com.hotel.service.AuthenticationService;
 import com.hotel.service.BookingService;
 import com.hotel.service.RoomService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 @Service
 public class BookingServiceImpl implements BookingService {
 
@@ -41,7 +43,9 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingDTO createBooking(BookingRequest bookingRequest) {
         BookingDTO newBooking = configureBooking(bookingRequest);
-        return bookingMapper.toDto(bookingRepository.save(bookingMapper.toEntity(newBooking)));
+        Booking savedBooking = bookingRepository.save(bookingMapper.toEntity(newBooking));
+        log.info("New booking created: {}", savedBooking);
+        return bookingMapper.toDto(savedBooking);
     }
 
     private BookingDTO configureBooking(BookingRequest bookingRequest) {
@@ -53,6 +57,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setCheckOutDate(LocalDate.parse(bookingRequest.checkOutDate()));
         booking.setTotalPrice(calculateTotalPrice(booking));
         booking.setPaymentStatus(PaymentStatus.PENDING);
+        booking.setCustomer(authService.getLoggedInUser());
         return booking;
     }
 

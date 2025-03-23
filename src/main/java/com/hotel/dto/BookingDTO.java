@@ -3,10 +3,7 @@ package com.hotel.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hotel.enums.BookingStatus;
 import com.hotel.enums.PaymentStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@ToString
 public class BookingDTO {
 
     private Long id;

@@ -2,16 +2,14 @@ package com.hotel.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hotel.enums.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@ToString
 public class UserDTO {
 
     private Long id;

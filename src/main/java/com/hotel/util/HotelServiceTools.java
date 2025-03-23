@@ -6,7 +6,6 @@ import com.hotel.dto.request.BookingRequest;
 import com.hotel.dto.request.RoomRequest;
 import com.hotel.service.BookingService;
 import com.hotel.service.RoomService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +28,12 @@ public class HotelServiceTools {
     public HotelServiceTools(RoomService roomService, BookingService bookingService) {
         this.roomService = roomService;
         this.bookingService = bookingService;
+    }
+
+    @Bean
+    @Description("Get current user bookings")
+    public Function<Void, List<BookingDTO>> getCurrentUserBookings() {
+        return getCurrentUserBookings(bookingService::getCurrentUserBookings);
     }
 
     @Bean
@@ -64,7 +69,11 @@ public class HotelServiceTools {
     }
 
     private Function<RoomRequest, List<RoomDTO>> getAvailableRoomsByDate(BiFunction<LocalDate, LocalDate, List<RoomDTO>> processor) {
-        return request -> processor.apply(request.checkInDate(), request.checkOutDate());
+        return request -> {
+            List<RoomDTO> rooms = processor.apply(request.checkInDate(), request.checkOutDate());
+            log.info("Available rooms for dates {} - {}: {}", request.checkInDate(), request.checkOutDate(), rooms);
+            return rooms;
+        };
     }
 
     private Function<Void, List<RoomDTO>> getAvailableRooms(Supplier<List<RoomDTO>> roomSupplier) {
@@ -77,5 +86,13 @@ public class HotelServiceTools {
 
     private Function<BookingRequest, BookingDTO> createBookingFunction(Function<BookingRequest, BookingDTO> processor) {
         return processor;
+    }
+
+    private Function<Void, List<BookingDTO>> getCurrentUserBookings(Supplier<List<BookingDTO>> processor) {
+        return request -> {
+            List<BookingDTO> bookings = processor.get();
+            log.info("\n\n>>>>> All Bookings: {}", bookings);
+            return bookings;
+        };
     }
 }
