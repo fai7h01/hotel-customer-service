@@ -1,6 +1,7 @@
 package com.hotel.service.impl;
 
 import com.hotel.dto.RoomDTO;
+import com.hotel.enums.RoomType;
 import com.hotel.exception.RoomNotFoundException;
 import com.hotel.mapper.RoomMapper;
 import com.hotel.repository.RoomRepository;
@@ -39,6 +40,13 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomDTO> getAvailableRoomsByDate(LocalDate checkInDate, LocalDate checkOutDate) {
         validateDates(checkInDate, checkOutDate);
         var rooms = roomRepository.findAvailableRoomsByDateRange(checkInDate, checkOutDate);
+        return roomMapper.toDtoList(rooms);
+    }
+
+    @Override
+    public List<RoomDTO> getAvailableRoomsByTypeDate(RoomType type, LocalDate checkInDate, LocalDate checkOutDate) {
+        validateDates(checkInDate, checkOutDate);
+        var rooms = roomRepository.findAvailableRoomsByTypeAndDateRange(type, checkInDate, checkOutDate);
         return roomMapper.toDtoList(rooms);
     }
 

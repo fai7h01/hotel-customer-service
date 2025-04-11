@@ -72,7 +72,7 @@ INSERT INTO bookings ( user_id, room_id, check_in_date, check_out_date, number_o
   'CONFIRMED', 'PAID', now(), 1, now(), 1, false),
 
 -- Booking for SINGLE room (102)
-( 5, 2, '2025-04-10', '2025-04-24', 1, 239.97,
+( 5, 2, '2025-04-10', '2025-04-30', 1, 239.97,
   'CONFIRMED', 'PAID', now(), 1, now(), 1, false),
 
 -- Booking for DOUBLE room (103)
@@ -80,6 +80,7 @@ INSERT INTO bookings ( user_id, room_id, check_in_date, check_out_date, number_o
   'CONFIRMED', 'PAID', now(), 1, now(), 1, false),
 
 -- Booking for TRIPLE room (302)
+
 ( 2, 8, '2025-03-15', '2025-03-21', 3, 649.95,
   'CONFIRMED', 'PENDING', now(), 1, now(), 1, false),
 

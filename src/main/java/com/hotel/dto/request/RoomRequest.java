@@ -1,6 +1,8 @@
 package com.hotel.dto.request;
 
+import com.hotel.enums.RoomType;
+
 import java.time.LocalDate;
 
-public record RoomRequest(LocalDate checkInDate, LocalDate checkOutDate) {
+public record RoomRequest(RoomType roomType, LocalDate checkInDate, LocalDate checkOutDate) {
 }

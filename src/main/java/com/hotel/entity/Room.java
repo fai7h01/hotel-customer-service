@@ -10,6 +10,7 @@ import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,4 +29,6 @@ public class Room extends BaseEntity {
     private BigDecimal pricePerNight;
     private int capacity;
     private int floorNumber;
+    @OneToMany(mappedBy = "room")
+    private Set<Booking> bookings;
 }

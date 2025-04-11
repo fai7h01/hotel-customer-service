@@ -23,12 +23,22 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             "AND b.checkOutDate >= CURRENT_DATE)")
     List<Room> findAllByAvailable();
 
-    @Query("SELECT r FROM Room r WHERE r.id NOT IN (" +
-            "SELECT b.room.id FROM Booking b " +
-            "WHERE b.status != 'CANCELLED' " +
-            "AND b.checkInDate <= :checkOutDate " +
-            "AND b.checkOutDate >= :checkInDate)")
+    @Query("SELECT r FROM Room r WHERE NOT EXISTS (" +
+            "SELECT b FROM r.bookings b " +
+            "WHERE b.status <> 'CANCELLED' " +
+            "AND b.checkInDate < :checkOutDate " +
+            "AND b.checkOutDate > :checkInDate)")
     List<Room> findAvailableRoomsByDateRange(@Param("checkInDate") LocalDate checkInDate,
                                              @Param("checkOutDate") LocalDate checkOutDate);
+
+    @Query("SELECT DISTINCT r FROM Room r " +
+            "LEFT JOIN r.bookings b " +
+            "ON b.status != 'CANCELLED' AND b.checkInDate < :checkOutDate AND b.checkOutDate > :checkInDate " +
+            "WHERE r.roomType = :roomType AND b.id IS NULL")
+    List<Room> findAvailableRoomsByTypeAndDateRange(@Param("roomType") RoomType roomType,
+                                                    @Param("checkInDate") LocalDate checkInDate,
+                                                    @Param("checkOutDate") LocalDate checkOutDate);
+
+
 
 }
